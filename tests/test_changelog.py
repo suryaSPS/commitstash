@@ -1,5 +1,4 @@
-from autocommit.changelog import build_changelog, group_commits
-
+from commitstash.changelog import build_changelog, group_commits
 
 SUBJECTS = [
     "feat(auth): add OAuth callback",
@@ -12,7 +11,7 @@ SUBJECTS = [
 
 
 def test_group_commits_by_type():
-    sections, breaking, other = group_commits(SUBJECTS)
+    sections, _breaking, _other = group_commits(SUBJECTS)
     assert "**auth:** add OAuth callback" in sections["Features"]
     assert "**cli:** handle empty diff" in sections["Bug Fixes"]
     assert sections["Documentation"] == ["update README"]

@@ -1,6 +1,6 @@
 <div align="center">
 
-# autocommit
+# commitstash
 
 **AI-powered git commit message generator — reads your staged diff, writes the commit for you**
 
@@ -21,18 +21,18 @@ Writing good commit messages is tedious. Most developers either:
 
 ## The Solution
 
-`autocommit` reads your staged diff and generates a precise, conventional commit message using Claude or GPT — in under 3 seconds. No API key? Run it fully offline with `--no-ai` and it builds a message straight from the diff, or point it at a local model with Ollama.
+`commitstash` reads your staged diff and generates a precise, conventional commit message using Claude or GPT — in under 3 seconds. No API key? Run it fully offline with `--no-ai` and it builds a message straight from the diff, or point it at a local model with Ollama.
 
 It does more than messages:
 
 - **Blocks secrets** — every commit is scanned for API keys, tokens, and credentials in your staged changes. Leaks are stopped before they land.
-- **Reviews your diff** — `autocommit review` flags bugs and issues before you commit.
-- **Writes your PR** — `autocommit pr` drafts a title and description from your branch's commits and diff.
+- **Reviews your diff** — `commitstash review` flags bugs and issues before you commit.
+- **Writes your PR** — `commitstash pr` drafts a title and description from your branch's commits and diff.
 
 ```
 git add orders/views.py orders/serializers.py
 
-autocommit
+commitstash
 ```
 
 ```
@@ -80,7 +80,7 @@ Add the export to your `~/.zshrc` or `~/.bashrc` so it persists.
 git add <files>
 
 # Generate and commit
-autocommit
+commitstash
 ```
 
 That's it. Press Enter to accept, `e` to edit, `r` to regenerate, `q` to quit.
@@ -91,26 +91,26 @@ That's it. Press Enter to accept, `e` to edit, `r` to regenerate, `q` to quit.
 
 ```bash
 # Stage everything, then generate
-autocommit -a
+commitstash -a
 
 # Auto-accept without prompting (CI / hooks)
-autocommit -a -y
+commitstash -a -y
 
 # Change style for one commit
-autocommit --style simple
-autocommit --style angular
+commitstash --style simple
+commitstash --style angular
 
 # Add emoji prefix  (✨ feat, 🐛 fix, ♻️ refactor...)
-autocommit --emoji
+commitstash --emoji
 
 # Include a commit body explaining WHY
-autocommit --body
+commitstash --body
 
 # Switch provider for one commit
-autocommit --provider openai
+commitstash --provider openai
 
 # No API key — generate offline from the diff
-autocommit --no-ai
+commitstash --no-ai
 ```
 
 ---
@@ -118,12 +118,12 @@ autocommit --no-ai
 ## No-AI (offline) mode
 
 Don't have an API key, working offline, or just want zero-cost commits? Add `--no-ai`
-and `autocommit` builds the message locally by analyzing your staged diff — no network,
+and `commitstash` builds the message locally by analyzing your staged diff — no network,
 no key, no SDK required.
 
 ```bash
-autocommit --no-ai        # generate offline
-autocommit --no-ai -a -y  # stage all, offline, auto-accept
+commitstash --no-ai        # generate offline
+commitstash --no-ai -a -y  # stage all, offline, auto-accept
 ```
 
 It inspects the diff to pick a sensible message:
@@ -144,14 +144,14 @@ reader — press `e` to tweak anything before committing.
 Make it the default so you never pass the flag:
 
 ```bash
-autocommit configure   # choose "local" when prompted for provider
+commitstash configure   # choose "local" when prompted for provider
 ```
 
 ---
 
 ## Secret Scanning
 
-Before every commit, `autocommit` scans your **staged changes** for secrets — AWS keys,
+Before every commit, `commitstash` scans your **staged changes** for secrets — AWS keys,
 GitHub tokens, Anthropic/OpenAI keys, Slack/Stripe/Google keys, private key blocks, JWTs,
 and hardcoded `password`/`api_key`/`token` assignments. If it finds one, the commit is
 blocked and the finding is shown with the secret redacted:
@@ -170,10 +170,10 @@ Run the scan on its own — it exits non-zero when anything is found, so it drop
 a pre-commit hook or CI step:
 
 ```bash
-autocommit scan
+commitstash scan
 ```
 
-Turn the automatic commit-time gate off in `autocommit configure` (or set `"scan_secrets": false`
+Turn the automatic commit-time gate off in `commitstash configure` (or set `"scan_secrets": false`
 in your config).
 
 ---
@@ -183,8 +183,8 @@ in your config).
 Get a review of your staged diff before you commit:
 
 ```bash
-autocommit review            # AI review with your configured provider
-autocommit review --no-ai    # offline pattern checks only
+commitstash review            # AI review with your configured provider
+commitstash review --no-ai    # offline pattern checks only
 ```
 
 With an AI provider it looks for bugs, security issues, and clear mistakes in the changed
@@ -199,9 +199,9 @@ and tells you it isn't a correctness review.
 Draft a PR title and description from the commits and diff on your current branch:
 
 ```bash
-autocommit pr                    # base branch autodetected (origin/HEAD, then main/master)
-autocommit pr --base develop     # compare against a specific branch
-autocommit pr --no-ai            # assemble from commit subjects, no API key
+commitstash pr                    # base branch autodetected (origin/HEAD, then main/master)
+commitstash pr --base develop     # compare against a specific branch
+commitstash pr --no-ai            # assemble from commit subjects, no API key
 ```
 
 Output is a title plus a `## Summary` / `## Changes` / `## Testing` markdown body — paste it
@@ -224,14 +224,14 @@ straight into GitHub.
 Run the interactive setup to save your preferences:
 
 ```bash
-autocommit configure
+commitstash configure
 ```
 
-Preferences are saved to `~/.autocommit/config.json`.
+Preferences are saved to `~/.commitstash/config.json`.
 API keys are **never** written to disk — always read from environment variables.
 
 <details>
-<summary>Manual config (~/.autocommit/config.json)</summary>
+<summary>Manual config (~/.commitstash/config.json)</summary>
 
 ```json
 {
@@ -262,12 +262,12 @@ API keys are **never** written to disk — always read from environment variable
 
 Switch permanently:
 ```bash
-autocommit configure   # select openai when prompted
+commitstash configure   # select openai when prompted
 ```
 
 Switch for one commit:
 ```bash
-autocommit -p openai
+commitstash -p openai
 ```
 
 ### Ollama (local LLM)
@@ -278,8 +278,8 @@ Run a real model on your own machine — no API key, no network calls off-box:
 ollama serve
 ollama pull llama3.2
 
-autocommit -p ollama            # one commit
-autocommit configure            # choose "ollama"; set model + host
+commitstash -p ollama            # one commit
+commitstash configure            # choose "ollama"; set model + host
 ```
 
 Model and host are configurable (`ollama_model`, `ollama_host`).
@@ -288,10 +288,10 @@ Model and host are configurable (`ollama_model`, `ollama_host`).
 
 ## Git Hook
 
-Install `autocommit` as a `prepare-commit-msg` hook so every `git commit` auto-generates a message:
+Install `commitstash` as a `prepare-commit-msg` hook so every `git commit` auto-generates a message:
 
 ```bash
-autocommit install-hook
+commitstash install-hook
 ```
 
 To uninstall:
@@ -303,13 +303,13 @@ rm .git/hooks/prepare-commit-msg
 
 ## Commit Splitting
 
-Staged everything at once? `autocommit split` clusters the staged files into
+Staged everything at once? `commitstash split` clusters the staged files into
 logical commits — source changes by scope, then tests, docs, and config — and
 commits each group with its own generated message:
 
 ```
 git add .
-autocommit split
+commitstash split
 
 Proposed split (3 commits, AI grouping)
 
@@ -340,19 +340,19 @@ silently dragging unstaged work into a commit.
 
 ```bash
 # Plain-language explanation of the staged diff — what, why, impact, risk
-autocommit explain
+commitstash explain
 
 # Changelog section from conventional commits since the last tag
-autocommit changelog
+commitstash changelog
 
 # ...or a labelled release, prepended to CHANGELOG.md
-autocommit changelog --label v0.3.0 --write
+commitstash changelog --label v0.3.0 --write
 ```
 
 `changelog` is deliberately deterministic — the same history always produces
 the same changelog, so it needs no API key and works in CI.
 
-`autocommit` also reads your recent commit history when generating messages,
+`commitstash` also reads your recent commit history when generating messages,
 so suggestions match the tone and scope conventions your repo already uses.
 
 ---
@@ -363,7 +363,7 @@ Backends are pluggable. Anything that can complete a prompt can drive every
 feature — subclass, register, done:
 
 ```python
-from autocommit.providers import LLMProvider, register
+from commitstash.providers import LLMProvider, register
 
 class GroqProvider(LLMProvider):
     name = "groq"
@@ -380,19 +380,19 @@ register(GroqProvider())
 
 | Command | Description |
 |---|---|
-| `autocommit` | Generate from staged diff (interactive) |
-| `autocommit -a` | Stage all changes, then generate |
-| `autocommit -y` | Auto-accept first suggestion |
-| `autocommit --no-ai` | Generate offline, no API key needed |
-| `autocommit scan` | Scan staged changes for secrets (exits 1 on findings) |
-| `autocommit review` | Review the staged diff for bugs and issues |
-| `autocommit pr` | Draft a PR title and description for the branch |
-| `autocommit split` | Split staged changes into a series of atomic commits |
-| `autocommit explain` | Explain the staged diff: what, why, impact, risk |
-| `autocommit changelog` | Generate a changelog from conventional commit history |
-| `autocommit configure` | Interactive setup |
-| `autocommit install-hook` | Install as git hook in current repo |
-| `autocommit version` | Show version |
+| `commitstash` | Generate from staged diff (interactive) |
+| `commitstash -a` | Stage all changes, then generate |
+| `commitstash -y` | Auto-accept first suggestion |
+| `commitstash --no-ai` | Generate offline, no API key needed |
+| `commitstash scan` | Scan staged changes for secrets (exits 1 on findings) |
+| `commitstash review` | Review the staged diff for bugs and issues |
+| `commitstash pr` | Draft a PR title and description for the branch |
+| `commitstash split` | Split staged changes into a series of atomic commits |
+| `commitstash explain` | Explain the staged diff: what, why, impact, risk |
+| `commitstash changelog` | Generate a changelog from conventional commit history |
+| `commitstash configure` | Interactive setup |
+| `commitstash install-hook` | Install as git hook in current repo |
+| `commitstash version` | Show version |
 
 ---
 

@@ -1,4 +1,4 @@
-from autocommit.secrets import scan_diff
+from commitstash.secrets import scan_diff
 
 from .conftest import make_diff
 

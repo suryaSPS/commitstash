@@ -1,6 +1,6 @@
-# Contributing to autocommit
+# Contributing to commitstash
 
-Thanks for your interest in improving **autocommit** (published on PyPI as
+Thanks for your interest in improving **commitstash** (published on PyPI as
 [`commitstash`](https://pypi.org/project/commitstash/)) — an AI-powered git
 workflow CLI that writes commit messages, scans for secrets, reviews diffs, and
 drafts PRs from your staged changes.
@@ -13,8 +13,8 @@ structure, style, and testing, see [`AGENTS.md`](./AGENTS.md).
 Requires **Python 3.9+**.
 
 ```bash
-git clone https://github.com/suryaSPS/autocommit.git
-cd autocommit
+git clone https://github.com/suryaSPS/commitstash.git
+cd commitstash
 
 python -m venv .venv
 source .venv/bin/activate       # Windows: .venv\Scripts\activate
@@ -26,7 +26,7 @@ pre-commit install               # run lint/type checks on every commit
 Verify the console script is wired up:
 
 ```bash
-autocommit version
+commitstash version
 ```
 
 ## Running the checks
@@ -36,7 +36,7 @@ locally before pushing:
 
 ```bash
 ruff check .            # lint (100-char line length)
-mypy autocommit/        # type-check
+mypy commitstash/        # type-check
 pytest -q               # tests
 ```
 
@@ -44,17 +44,17 @@ pytest -q               # tests
 
 1. Branch off `master`: `git checkout -b feat/short-description`.
 2. Make focused commits — this repo **dogfoods itself**, so stage your changes
-   and run `autocommit` to generate the message.
+   and run `commitstash` to generate the message.
 3. Follow [Conventional Commits](https://www.conventionalcommits.org/): prefixes
    like `feat:`, `fix:`, `docs:`, `test:`, `chore:`, `refactor:`. The
-   `autocommit changelog` command relies on these to generate release notes.
+   `commitstash changelog` command relies on these to generate release notes.
 4. Add or update tests under `tests/` (`test_<module>.py`). Mock network clients
    and subprocess calls — never require a real API key or make real commits.
 5. Open a PR against `master` using the pull request template.
 
 ## Adding a new LLM provider
 
-Providers live in [`autocommit/providers.py`](./autocommit/providers.py) behind a
+Providers live in [`commitstash/providers.py`](./commitstash/providers.py) behind a
 small abstraction, so adding one (e.g. Gemini or Groq) is self-contained:
 
 1. Subclass `LLMProvider` and implement `complete(self, prompt, config, max_tokens)`,
@@ -62,21 +62,21 @@ small abstraction, so adding one (e.g. Gemini or Groq) is self-contained:
 2. Give it a `name` and register it in the `PROVIDERS` registry (follow how
    `AnthropicProvider`, `OpenAIProvider`, and `OllamaProvider` do it).
 3. If the provider runs locally with no key (like Ollama), add its name to
-   `LOCAL_PROVIDERS` in `autocommit/llm.py`.
+   `LOCAL_PROVIDERS` in `commitstash/llm.py`.
 4. Add unit tests that mock the client — assert prompt handling and error paths,
    not live network calls.
 
 ## Reporting bugs & requesting features
 
 Use the [issue templates](./.github/ISSUE_TEMPLATE/) — they prompt for the
-version (`autocommit version`), OS, provider, and steps to reproduce, which makes
+version (`commitstash version`), OS, provider, and steps to reproduce, which makes
 triage much faster.
 
 ## Security
 
 Never commit API keys or generated local config. `ANTHROPIC_API_KEY` and
 `OPENAI_API_KEY` belong in environment variables only, never in
-`~/.autocommit/config.json` or test fixtures. If you find a security issue,
+`~/.commitstash/config.json` or test fixtures. If you find a security issue,
 please open a minimal report rather than including real secrets.
 
 ## License

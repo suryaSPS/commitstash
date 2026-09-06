@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.5.0 (2026-09-07)
+
+### Changed
+
+- standardize the distribution, command, Python package, configuration path, and documentation as `commitstash`
+- config moves to `~/.commitstash/config.json`; an existing `~/.autocommit/config.json` is
+  carried over automatically on first run, so settings and onboarding state survive the upgrade
+
 ## v0.4.0 (2026-07-19)
 
 ### Features
@@ -14,7 +22,7 @@
 
 ### Features
 
-- initial autocommit CLI — AI-powered git commit message generator
+- initial commitstash CLI — AI-powered git commit message generator
 - **secrets:** add regex-based secret scanner
 - **llm:** add ollama provider and shared completion dispatch
 - **review:** add staged-diff code review module

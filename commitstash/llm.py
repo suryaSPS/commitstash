@@ -3,7 +3,6 @@ from pathlib import PurePosixPath
 
 from . import providers
 
-
 STYLE_INSTRUCTIONS = {
     "conventional": """\
 Generate a conventional commit message.

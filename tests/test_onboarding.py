@@ -1,6 +1,6 @@
 from rich.console import Console
 
-from autocommit import onboarding
+from commitstash import onboarding
 
 
 def test_is_first_run(tmp_path):
@@ -11,8 +11,8 @@ def test_is_first_run(tmp_path):
 
 
 def _patch_config_path(monkeypatch, tmp_path):
-    """Point save_config at a temp file so tests never touch the real ~/.autocommit."""
-    monkeypatch.setattr("autocommit.config.CONFIG_PATH", tmp_path / "config.json")
+    """Point save_config at a temp file so tests never touch the real ~/.commitstash."""
+    monkeypatch.setattr("commitstash.config.CONFIG_PATH", tmp_path / "config.json")
 
 
 def test_onboarding_local_provider(monkeypatch, tmp_path):

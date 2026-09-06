@@ -1,6 +1,6 @@
 """First-run onboarding.
 
-Triggers the first time someone runs `autocommit` with no saved config.
+Triggers the first time someone runs `commitstash` with no saved config.
 Walks them through picking a provider and getting a key in place.
 
 Security: this flow NEVER writes an API key to disk. A key entered here is
@@ -95,10 +95,10 @@ def run_onboarding(console: Console, config: dict) -> dict:
     """
     console.print(
         Panel(
-            "Welcome to [bold]autocommit[/bold] 👋\n\n"
+            "Welcome to [bold]commitstash[/bold] 👋\n\n"
             "Let's set up how your commit messages get generated.\n"
             "[dim]Takes about 20 seconds. Change anything later with "
-            "[bold]autocommit configure[/bold].[/dim]",
+            "[bold]commitstash configure[/bold].[/dim]",
             title="[bold]First-time setup[/bold]",
             border_style="cyan",
         )

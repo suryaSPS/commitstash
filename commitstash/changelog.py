@@ -56,7 +56,7 @@ def group_commits(subjects):
 
 def build_changelog(subjects, label="Unreleased", date=None):
     """Render a markdown changelog block for one release."""
-    date = date or datetime.date.today().isoformat()
+    date = date or datetime.datetime.now().astimezone().date().isoformat()
     sections, breaking, other = group_commits(subjects)
 
     lines = [f"## {label} ({date})", ""]

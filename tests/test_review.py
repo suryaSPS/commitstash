@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from autocommit.review import offline_review, review
+from commitstash.review import offline_review, review
 
 from .conftest import make_diff
 
@@ -33,7 +33,7 @@ def test_review_local_returns_offline_flag():
 
 
 def test_review_ai_calls_complete():
-    with patch("autocommit.review.complete", return_value="No issues found.") as mock:
+    with patch("commitstash.review.complete", return_value="No issues found.") as mock:
         text, is_offline = review("some diff", ["a.py"], {"provider": "anthropic"})
     assert is_offline is False
     assert text == "No issues found."
