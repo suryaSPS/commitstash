@@ -7,7 +7,7 @@ def make_diff(path, added_lines, new_file=False):
     if new_file:
         header += "new file mode 100644\nindex 0000000..1111111\n--- /dev/null\n"
     else:
-        header += "index 1111111..2222222 100644\n--- a/{0}\n".format(path)
+        header += f"index 1111111..2222222 100644\n--- a/{path}\n"
     header += f"+++ b/{path}\n"
     hunk = f"@@ -0,0 +1,{len(added_lines)} @@\n"
     body = "".join(f"+{line}\n" for line in added_lines)

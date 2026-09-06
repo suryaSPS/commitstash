@@ -7,6 +7,7 @@ def is_git_repo():
         ["git", "rev-parse", "--is-inside-work-tree"],
         capture_output=True,
         text=True,
+        check=False,
     )
     return result.returncode == 0
 
@@ -16,6 +17,7 @@ def get_staged_diff():
         ["git", "diff", "--cached"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return None, result.stderr
@@ -27,6 +29,7 @@ def get_staged_files():
         ["git", "diff", "--cached", "--name-only"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return [], result.stderr
@@ -35,7 +38,7 @@ def get_staged_files():
 
 
 def stage_all():
-    result = subprocess.run(["git", "add", "-A"], capture_output=True, text=True)
+    result = subprocess.run(["git", "add", "-A"], capture_output=True, text=True, check=False)
     return result.returncode == 0
 
 
@@ -44,6 +47,7 @@ def make_commit(message):
         ["git", "commit", "-m", message],
         capture_output=True,
         text=True,
+        check=False,
     )
     return result.returncode == 0, result.stdout, result.stderr
 
@@ -53,6 +57,7 @@ def get_current_branch():
         ["git", "rev-parse", "--abbrev-ref", "HEAD"],
         capture_output=True,
         text=True,
+        check=False,
     )
     return result.stdout.strip() if result.returncode == 0 else None
 
@@ -63,6 +68,7 @@ def get_default_branch():
         ["git", "symbolic-ref", "--short", "refs/remotes/origin/HEAD"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode == 0:
         return result.stdout.strip().removeprefix("origin/")
@@ -71,6 +77,7 @@ def get_default_branch():
             ["git", "rev-parse", "--verify", "--quiet", name],
             capture_output=True,
             text=True,
+            check=False,
         )
         if check.returncode == 0:
             return name
@@ -83,6 +90,7 @@ def get_branch_commits(base):
         ["git", "log", "--reverse", "--pretty=%s", f"{base}..HEAD"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return [], result.stderr
@@ -95,6 +103,7 @@ def get_branch_diff(base):
         ["git", "diff", f"{base}...HEAD"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return None, result.stderr
@@ -107,6 +116,7 @@ def get_recent_commit_subjects(n=20):
         ["git", "log", f"-{n}", "--pretty=%s"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return []
@@ -118,6 +128,7 @@ def get_last_tag():
         ["git", "describe", "--tags", "--abbrev=0"],
         capture_output=True,
         text=True,
+        check=False,
     )
     return result.stdout.strip() if result.returncode == 0 else None
 
@@ -129,6 +140,7 @@ def get_commit_subjects_since(ref):
         ["git", "log", "--reverse", "--pretty=%s", rev_range],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return [], result.stderr
@@ -140,6 +152,7 @@ def get_unstaged_files():
         ["git", "diff", "--name-only"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode != 0:
         return []
@@ -147,12 +160,12 @@ def get_unstaged_files():
 
 
 def unstage_all():
-    result = subprocess.run(["git", "reset", "-q"], capture_output=True, text=True)
+    result = subprocess.run(["git", "reset", "-q"], capture_output=True, text=True, check=False)
     return result.returncode == 0
 
 
 def stage_files(files):
-    result = subprocess.run(["git", "add", "--", *files], capture_output=True, text=True)
+    result = subprocess.run(["git", "add", "--", *files], capture_output=True, text=True, check=False)
     return result.returncode == 0
 
 
@@ -161,6 +174,7 @@ def get_repo_name():
         ["git", "rev-parse", "--show-toplevel"],
         capture_output=True,
         text=True,
+        check=False,
     )
     if result.returncode == 0:
         return Path(result.stdout.strip()).name

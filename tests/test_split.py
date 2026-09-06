@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 from commitstash import split
 
-
 FILES = ["auth/views.py", "auth/models.py", "tests/test_auth.py", "README.md", "pyproject.toml"]
 
 
@@ -47,9 +46,8 @@ def test_ai_grouping_valid_json_used():
 
 
 def test_ai_grouping_wrapped_in_prose_still_parses():
-    raw = 'Here you go:\n```json\n{"groups": [{"reason": "all", "files": %s}]}\n```' % json.dumps(
-        FILES
-    )
+    payload = json.dumps({"groups": [{"reason": "all", "files": FILES}]})
+    raw = f"Here you go:\n```json\n{payload}\n```"
     with patch("commitstash.split.complete", return_value=raw):
         groups, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert used_ai

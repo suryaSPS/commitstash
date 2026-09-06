@@ -37,6 +37,6 @@ def test_ai_pr_parses_title_and_body():
 
 def test_ai_pr_falls_back_when_no_title_line():
     with patch("commitstash.pr.complete", return_value="just some prose"):
-        title, body = write_pr("f", "main", ["feat: flags"], "diff", {"provider": "anthropic"})
+        title, _body = write_pr("f", "main", ["feat: flags"], "diff", {"provider": "anthropic"})
     # Falls back to the offline title derived from commits
     assert title == "feat: flags"

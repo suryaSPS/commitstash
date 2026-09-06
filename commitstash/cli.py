@@ -251,10 +251,10 @@ def cli(ctx, style, emoji, body, provider, no_ai, stage_all_files, yes):
     while True:
         try:
             message = _generate_with_spinner(diff, files, config)
-        except (EnvironmentError, ImportError) as e:
+        except (OSError, ImportError) as e:
             console.print(f"\n[red]✗ {e}[/red]")
             sys.exit(1)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - last-resort guard so the CLI never tracebacks
             console.print(f"\n[red]✗ Unexpected error:[/red] {e}")
             sys.exit(1)
 
@@ -480,10 +480,10 @@ def review(provider, no_ai):
     try:
         with console.status("[bold blue]Reviewing changes...[/bold blue]", spinner="dots"):
             text, is_offline = _review(diff, files, config)
-    except (EnvironmentError, ImportError) as e:
+    except (OSError, ImportError) as e:
         console.print(f"\n[red]✗ {e}[/red]")
         sys.exit(1)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - last-resort guard so the CLI never tracebacks
         console.print(f"\n[red]✗ Unexpected error:[/red] {e}")
         sys.exit(1)
 
@@ -554,10 +554,10 @@ def pr(base, provider, no_ai):
     try:
         with console.status("[bold blue]Writing PR description...[/bold blue]", spinner="dots"):
             title, body = write_pr(branch, base, commits, diff or "", config)
-    except (EnvironmentError, ImportError) as e:
+    except (OSError, ImportError) as e:
         console.print(f"\n[red]✗ {e}[/red]")
         sys.exit(1)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - last-resort guard so the CLI never tracebacks
         console.print(f"\n[red]✗ Unexpected error:[/red] {e}")
         sys.exit(1)
 
@@ -627,7 +627,7 @@ def split(stage_all_files, yes, provider, no_ai):
     try:
         with console.status("[bold blue]Planning commit groups...[/bold blue]", spinner="dots"):
             groups, used_ai = propose_groups_ai(diff, files, config)
-    except (EnvironmentError, ImportError) as e:
+    except (OSError, ImportError) as e:
         console.print(f"\n[red]✗ {e}[/red]")
         sys.exit(1)
 
@@ -663,7 +663,7 @@ def split(stage_all_files, yes, provider, no_ai):
             _restore_and_die(files, f"could not stage group {i}", created)
         try:
             message = generate(gdiff, group.files, config, recent_subjects=recent)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - any failure must re-stage before exiting
             _restore_and_die(files, str(e), created)
         success, _, cerr = make_commit(message)
         if not success:
@@ -715,7 +715,7 @@ def explain(provider):
     try:
         with console.status("[bold blue]Reading the diff...[/bold blue]", spinner="dots"):
             text = _explain(diff, files, config)
-    except (EnvironmentError, ImportError) as e:
+    except (OSError, ImportError) as e:
         console.print(f"\n[red]✗ {e}[/red]")
         sys.exit(1)
 

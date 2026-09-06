@@ -37,7 +37,7 @@ def test_get_staged_diff_error_returns_stderr():
 
 def test_make_commit_success():
     with patch("commitstash.git.subprocess.run", return_value=_result(0, "committed", "")):
-        ok, out, err = git.make_commit("feat: x")
+        ok, out, _err = git.make_commit("feat: x")
     assert ok is True
     assert out == "committed"
 

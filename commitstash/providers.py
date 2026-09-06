@@ -29,7 +29,7 @@ class AnthropicProvider(LLMProvider):
             raise ImportError("Install the Anthropic SDK:  pip install anthropic")
 
         if not os.getenv("ANTHROPIC_API_KEY"):
-            raise EnvironmentError(
+            raise OSError(
                 "ANTHROPIC_API_KEY is not set.\nExport it:  export ANTHROPIC_API_KEY=sk-ant-..."
             )
 
@@ -54,7 +54,7 @@ class OpenAIProvider(LLMProvider):
 
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
-            raise EnvironmentError(
+            raise OSError(
                 "OPENAI_API_KEY is not set.\nExport it:  export OPENAI_API_KEY=sk-..."
             )
 
@@ -94,7 +94,7 @@ class OllamaProvider(LLMProvider):
             with urllib.request.urlopen(req, timeout=120) as resp:
                 return json.load(resp)["response"].strip()
         except urllib.error.URLError as e:
-            raise EnvironmentError(
+            raise OSError(
                 f"Cannot reach Ollama at {host} ({e.reason}).\n"
                 "Is Ollama running?  Start it with:  ollama serve\n"
                 f"And pull the model:  ollama pull {config.get('ollama_model', 'llama3.2')}"
