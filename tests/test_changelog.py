@@ -1,4 +1,4 @@
-from autocommit.changelog import build_changelog, group_commits
+from commitstash.changelog import build_changelog, group_commits
 
 
 SUBJECTS = [

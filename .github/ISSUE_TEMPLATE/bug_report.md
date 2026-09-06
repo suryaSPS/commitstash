@@ -21,15 +21,15 @@ labels: bug
 
 ## Command & output
 
-<!-- The autocommit command you ran and its output. Redact any secrets. -->
+<!-- The commitstash command you ran and its output. Redact any secrets. -->
 
 ```
-$ autocommit ...
+$ commitstash ...
 ```
 
 ## Environment
 
-- autocommit version (`autocommit version`):
+- commitstash version (`commitstash version`):
 - Install source (PyPI `commitstash` / from source):
 - OS:
 - Python version (`python --version`):

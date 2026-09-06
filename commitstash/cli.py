@@ -172,10 +172,10 @@ def cli(ctx, style, emoji, body, provider, no_ai, stage_all_files, yes):
     \b
     Quick start:
       export ANTHROPIC_API_KEY=sk-ant-...
-      autocommit              # generate from staged changes
-      autocommit -a           # stage everything, then generate
-      autocommit -a -y        # stage + auto-accept (great for hooks)
-      autocommit --no-ai      # no API key needed — offline heuristic
+      commitstash              # generate from staged changes
+      commitstash -a           # stage everything, then generate
+      commitstash -a -y        # stage + auto-accept (great for hooks)
+      commitstash --no-ai      # no API key needed — offline heuristic
     """
     if ctx.invoked_subcommand is not None:
         return
@@ -220,7 +220,7 @@ def cli(ctx, style, emoji, body, provider, no_ai, stage_all_files, yes):
     if not diff.strip():
         console.print("[yellow]Nothing staged.[/yellow]  Stage changes first:\n")
         console.print("  [dim]git add <file>[/dim]        stage specific files")
-        console.print("  [dim]autocommit -a[/dim]         stage everything and generate")
+        console.print("  [dim]commitstash -a[/dim]         stage everything and generate")
         sys.exit(1)
 
     files, _ = get_staged_files()
@@ -361,7 +361,7 @@ def configure():
     console.print(f"\n[green]✓ Config saved to {path}[/green]")
     if provider == "local":
         console.print(
-            "\n[dim]Offline mode — no API key needed. Just run [bold]autocommit[/bold].[/dim]"
+            "\n[dim]Offline mode — no API key needed. Just run [bold]commitstash[/bold].[/dim]"
         )
     elif provider == "ollama":
         console.print(
@@ -379,7 +379,7 @@ def configure():
 
 @cli.command("install-hook")
 def install_hook():
-    """Install autocommit as a prepare-commit-msg git hook in the current repo.
+    """Install commitstash as a prepare-commit-msg git hook in the current repo.
 
     After installing, running `git commit` will automatically suggest a message.
     You can still edit it in your editor as usual.
@@ -396,14 +396,14 @@ def install_hook():
 
     hook_script = """\
 #!/bin/sh
-# autocommit — AI commit message generator
-# https://github.com/suryaSPS/autocommit
+# commitstash — AI commit message generator
+# https://github.com/suryaSPS/commitstash
 COMMIT_MSG_FILE="$1"
 COMMIT_SOURCE="$2"
 
 # Only run on blank commits (skip merge, squash, fixup, etc.)
 if [ -z "$COMMIT_SOURCE" ]; then
-    autocommit --yes 2>/dev/null || true
+    commitstash --yes 2>/dev/null || true
 fi
 """
 
@@ -724,7 +724,7 @@ def explain(provider):
             "[yellow]explain needs an AI provider[/yellow] — the offline heuristic can "
             "classify a change but not explain it."
         )
-        console.print("[dim]Try: autocommit explain -p ollama   (free, local)[/dim]")
+        console.print("[dim]Try: commitstash explain -p ollama   (free, local)[/dim]")
         sys.exit(1)
 
     from rich.markdown import Markdown
@@ -786,4 +786,4 @@ def version():
     """Show version."""
     from . import __version__
 
-    console.print(f"autocommit {__version__}")
+    console.print(f"commitstash {__version__}")

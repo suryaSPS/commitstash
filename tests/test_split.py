@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
 
-from autocommit import split
+from commitstash import split
 
 
 FILES = ["auth/views.py", "auth/models.py", "tests/test_auth.py", "README.md", "pyproject.toml"]
@@ -39,7 +39,7 @@ def test_ai_grouping_valid_json_used():
             ]
         }
     )
-    with patch("autocommit.split.complete", return_value=raw):
+    with patch("commitstash.split.complete", return_value=raw):
         groups, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert used_ai
     assert len(groups) == 3
@@ -50,7 +50,7 @@ def test_ai_grouping_wrapped_in_prose_still_parses():
     raw = 'Here you go:\n```json\n{"groups": [{"reason": "all", "files": %s}]}\n```' % json.dumps(
         FILES
     )
-    with patch("autocommit.split.complete", return_value=raw):
+    with patch("commitstash.split.complete", return_value=raw):
         groups, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert used_ai
     assert len(groups) == 1
@@ -58,7 +58,7 @@ def test_ai_grouping_wrapped_in_prose_still_parses():
 
 def test_ai_grouping_missing_file_falls_back():
     raw = json.dumps({"groups": [{"reason": "partial", "files": ["auth/views.py"]}]})
-    with patch("autocommit.split.complete", return_value=raw):
+    with patch("commitstash.split.complete", return_value=raw):
         groups, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert not used_ai  # fell back to heuristic
     seen = [f for g in groups for f in g.files]
@@ -67,19 +67,19 @@ def test_ai_grouping_missing_file_falls_back():
 
 def test_ai_grouping_invented_file_falls_back():
     raw = json.dumps({"groups": [{"reason": "bad", "files": FILES + ["ghost.py"]}]})
-    with patch("autocommit.split.complete", return_value=raw):
+    with patch("commitstash.split.complete", return_value=raw):
         _, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert not used_ai
 
 
 def test_ai_grouping_garbage_falls_back():
-    with patch("autocommit.split.complete", return_value="I cannot do that"):
+    with patch("commitstash.split.complete", return_value="I cannot do that"):
         _, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "anthropic"})
     assert not used_ai
 
 
 def test_local_provider_never_calls_ai():
-    with patch("autocommit.split.complete") as mock:
+    with patch("commitstash.split.complete") as mock:
         _, used_ai = split.propose_groups_ai("diff", FILES, {"provider": "local"})
     assert not used_ai
     mock.assert_not_called()

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "commitstash"
-version = "0.4.0"
+version = "0.5.0"
 description = "AI-powered git commit message generator — reads your staged diff, writes the commit for you"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -30,14 +30,14 @@ openai = ["openai>=1.0"]
 dev = ["pytest", "ruff", "mypy", "pre-commit"]
 
 [project.scripts]
-autocommit = "autocommit.cli:cli"
+commitstash = "commitstash.cli:cli"
 
 [project.urls]
-Homepage = "https://github.com/suryaSPS/autocommit"
-Issues = "https://github.com/suryaSPS/autocommit/issues"
+Homepage = "https://github.com/suryaSPS/commitstash"
+Issues = "https://github.com/suryaSPS/commitstash/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["autocommit"]
+packages = ["commitstash"]
 
 [tool.ruff]
 line-length = 100

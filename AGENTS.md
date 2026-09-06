@@ -4,14 +4,14 @@
 
 This repository contains a small Python CLI package for generating commit messages from staged diffs.
 
-- `autocommit/cli.py` defines the Click command group, interactive prompts, and subcommands.
-- `autocommit/git.py` wraps git operations such as reading staged files and creating commits.
-- `autocommit/llm.py` builds prompts and calls Anthropic or OpenAI providers.
-- `autocommit/config.py` loads and saves user preferences in `~/.autocommit/config.json`.
+- `commitstash/cli.py` defines the Click command group, interactive prompts, and subcommands.
+- `commitstash/git.py` wraps git operations such as reading staged files and creating commits.
+- `commitstash/llm.py` builds prompts and calls Anthropic or OpenAI providers.
+- `commitstash/config.py` loads and saves user preferences in `~/.commitstash/config.json`.
 - `README.md` documents user-facing installation, setup, and CLI usage.
 - `pyproject.toml` contains package metadata, dependencies, console script wiring, and Ruff settings.
 
-There is no committed `tests/` directory yet; add one with new tests.
+Tests live in `tests/`, organized by source module as `test_<module>.py`.
 
 ## Build, Test, and Development Commands
 
@@ -25,12 +25,12 @@ pip install -e ".[dev]"
 
 Common commands:
 
-- `autocommit version` verifies the editable console script is installed.
-- `pytest` runs the test suite once tests exist.
+- `commitstash version` verifies the editable console script is installed.
+- `pytest` runs the test suite.
 - `ruff check .` runs lint checks with the repository line length setting.
 - `python -m build` builds distribution artifacts, if the `build` package is installed.
 
-For manual testing, stage a small change in a disposable git repo and run `autocommit`.
+For manual testing, stage a small change in a disposable git repo and run `commitstash`.
 
 ## Coding Style & Naming Conventions
 
@@ -44,10 +44,10 @@ Use `pytest` for new tests. Place tests under `tests/` and name files `test_<mod
 
 ## Commit & Pull Request Guidelines
 
-Recent history uses Conventional Commit-style messages, for example `docs: add README` and `feat: initial autocommit CLI`. Continue using concise prefixes such as `feat:`, `fix:`, `docs:`, `test:`, and `chore:`.
+Recent history uses Conventional Commit-style messages, for example `docs: add README` and `feat: initial commitstash CLI`. Continue using concise prefixes such as `feat:`, `fix:`, `docs:`, `test:`, and `chore:`.
 
 Pull requests should include a short summary, testing performed, and any user-facing CLI behavior changes. Link related issues when available. Include terminal output only when it clarifies interactive CLI changes.
 
 ## Security & Configuration Tips
 
-Never commit API keys or generated local config. `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` must stay in environment variables. Do not persist secrets in `~/.autocommit/config.json` or test fixtures.
+Never commit API keys or generated local config. `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` must stay in environment variables. Do not persist secrets in `~/.commitstash/config.json` or test fixtures.

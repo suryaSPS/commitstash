@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from autocommit import llm, providers
+from commitstash import llm, providers
 
 from .conftest import make_diff
 
@@ -50,7 +50,7 @@ def test_complete_unknown_provider_raises():
 
 
 def test_generate_ai_provider_calls_complete():
-    with patch("autocommit.llm.complete", return_value="feat: thing") as mock:
+    with patch("commitstash.llm.complete", return_value="feat: thing") as mock:
         out = llm.generate("diff", ["a.py"], {"provider": "anthropic"})
     assert out == "feat: thing"
     mock.assert_called_once()

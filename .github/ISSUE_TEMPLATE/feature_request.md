@@ -7,14 +7,14 @@ labels: enhancement
 
 ## Problem / motivation
 
-<!-- What are you trying to do that autocommit doesn't support today? -->
+<!-- What are you trying to do that commitstash doesn't support today? -->
 
 ## Proposed solution
 
 <!-- What you'd like to see. If it's a new command or flag, sketch the usage. -->
 
 ```
-$ autocommit ...
+$ commitstash ...
 ```
 
 ## Alternatives considered

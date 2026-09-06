@@ -21,7 +21,7 @@ Use a Conventional Commit-style title, e.g. "feat: add Gemini provider".
 
 ```
 ruff check .
-mypy autocommit/
+mypy commitstash/
 pytest -q
 ```
 
